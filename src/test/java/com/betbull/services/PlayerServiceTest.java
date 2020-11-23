@@ -15,6 +15,7 @@ import static java.util.stream.Collectors.toSet;
 
 @SpringBootTest(classes = Application.class)
 public class PlayerServiceTest {
+
     @Autowired
     private PlayerService playerService;
     @Autowired

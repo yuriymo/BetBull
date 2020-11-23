@@ -25,10 +25,6 @@ public class PlayerControllerTest {
 
     @Autowired
     private MockMvc mvc;
-    @Autowired
-    private PlayerService playerService;
-    @Autowired
-    private TeamService teamService;
 
     @Test
     public void addPlayer() throws Exception {
