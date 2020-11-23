@@ -18,13 +18,13 @@ repositories {
 }
 
 dependencies {
-//    testImplementation group: 'junit', name: 'junit', version: '4.12'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
+    testImplementation group: 'junit', name: 'junit', version: '4.13'
+//    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
     }
     testImplementation 'com.tngtech.archunit:archunit:0.14.1'
-    testImplementation 'com.tngtech.archunit:archunit-junit5:0.14.1'
+    testImplementation 'com.tngtech.archunit:archunit-junit4:0.14.1'
     testImplementation 'org.mapstruct:mapstruct:1.4.1.Final'
     testAnnotationProcessor 'org.mapstruct:mapstruct-processor:1.4.1.Final', 'org.projectlombok:lombok:1.18.16', 'org.projectlombok:lombok-mapstruct-binding:0.1.0'
 
