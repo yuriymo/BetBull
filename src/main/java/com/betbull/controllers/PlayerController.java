@@ -31,7 +31,7 @@ public class PlayerController {
     }
 
     @GetMapping("/player/{id}")
-    public ResponseEntity<PlayerDto> getTeam(@PathVariable long id) {
+    public ResponseEntity<PlayerDto> getPlayer(@PathVariable long id) {
         PlayerDto PlayerDto = playerService.getPlayer(id);
         if (nonNull(PlayerDto)) {
             return ResponseEntity.ok().body(PlayerDto);
@@ -41,7 +41,7 @@ public class PlayerController {
     }
 
     @PostMapping("/add-player")
-    public ResponseEntity<PlayerDto> addTeam(@Param("name") String name, @Param("teamId") long teamId) {
+    public ResponseEntity<PlayerDto> addPlayer(@Param("name") String name, @Param("teamId") long teamId) {
         if (teamService.existsById(teamId)) {
             return ResponseEntity.ok().body(playerService.save(name, teamId));
         } else {

@@ -29,7 +29,7 @@ public class PlayerControllerTest {
     @Test
     public void addPlayer() throws Exception {
 
-        val teamDto = new Gson().fromJson(getResponseAsString("/add-team/test"), TeamDto.class);
+        val teamDto = new Gson().fromJson(getResponseAsString("/add-player/test"), TeamDto.class);
         if (isNull(teamDto)) {
             Assertions.fail("add-team - fail");
         }
@@ -41,7 +41,7 @@ public class PlayerControllerTest {
 
         val playerDto2 = new Gson().fromJson(getResponseAsString("/player/" + playerDto.getId()), PlayerDto.class);
         if (isNull(playerDto2)) {
-            Assertions.fail("add-player - fail");
+            Assertions.fail("get-player - fail");
         }
     }
 
