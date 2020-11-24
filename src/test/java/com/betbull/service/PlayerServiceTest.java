@@ -23,8 +23,8 @@ public class PlayerServiceTest {
     void addPlayer() {
         long team1 = teamService.save("team-1").getId();
         long team2 = teamService.save("team-2").getId();
-        long player1 = playerService.save(new PlayerDto(null, "player-1", 33, 13, team1, null)).getId();
-        long player2 = playerService.save(new PlayerDto(null, "player-2", 33, 13, team2, null)).getId();
+        long player1 = playerService.save(PlayerDto.builder().name("1").age(10).experience(10).teamId(team1).build()).getId();
+        long player2 = playerService.save(PlayerDto.builder().name("2").age(20).experience(10).teamId(team2).build()).getId();
         Set<Long> playerSet = Set.of(player1, player2);
         Set<Long> players = playerService.getAll().stream()
                 .map(PlayerDto::getId)
@@ -38,10 +38,10 @@ public class PlayerServiceTest {
     @Test
     void updatePlayerName() {
         long team1 = teamService.save("team-1").getId();
-        long player1 = playerService.save(new PlayerDto(null, "player-1", 33, 13, team1, null)).getId();
-        playerService.updatePlayer(player1, new PlayerDto( null, "update test", 33, 13, team1, null));
+        long player1 = playerService.save(PlayerDto.builder().name("1").age(10).experience(10).teamId(team1).build()).getId();
+        playerService.updatePlayer(player1, PlayerDto.builder().name("update test").build());
         if (!playerService.getPlayer(player1).getName().equals("update test")) {
-            Assertions.fail("updatePlayer");
+            Assertions.fail("updatePlayerName");
         }
     }
 
@@ -49,35 +49,35 @@ public class PlayerServiceTest {
     void updatePlayerTeam() {
         long team1 = teamService.save("team-1").getId();
         long team2 = teamService.save("team-2").getId();
-        long player1 = playerService.save(new PlayerDto(null, "player-1", 33, 13, team1, null)).getId();
-        playerService.updatePlayer(player1, new PlayerDto( null, null, null, null, team2, null));
+        long player1 = playerService.save(PlayerDto.builder().name("1").age(10).experience(10).teamId(team1).build()).getId();
+        playerService.updatePlayer(player1, PlayerDto.builder().teamId(team2).build());
         if (!playerService.getPlayer(player1).getTeamId().equals(team2)) {
-            Assertions.fail("updatePlayer");
+            Assertions.fail("updatePlayerTeam");
         }
     }
 
     @Test
     void deletePlayer() {
         long team1 = teamService.save("team-1").getId();
-        Long player1 = playerService.save(new PlayerDto(null, "player-1", 33, 13, team1, null)).getId();
+        Long player1 = playerService.save(PlayerDto.builder().name("1").age(10).experience(10).teamId(team1).build()).getId();
         playerService.deleteById(player1);
         Set<Long> players = playerService.getAll().stream()
                 .map(PlayerDto::getId)
                 .filter(player1::equals)
                 .collect(toSet());
         if (!players.isEmpty()) {
-            Assertions.fail("updatePlayer");
+            Assertions.fail("deletePlayer");
         }
     }
 
     @Test
     void getPlayerTransferFees() {
         long team1 = teamService.save("team-1").getId();
-        long player1 = playerService.save(new PlayerDto(null, "player-1", 10, 10, team1, null)).getId();
+        long player1 = playerService.save(PlayerDto.builder().name("1").age(10).experience(10).teamId(team1).build()).getId();
         double playerTransferFees = playerService.getPlayerTransferFees(player1);
         double controlFee = (double) (10 * 100000 / 10) * 1.1;
         if (playerTransferFees != controlFee) {
-            Assertions.fail("updatePlayer");
+            Assertions.fail("getPlayerTransferFees");
         }
     }
 }
