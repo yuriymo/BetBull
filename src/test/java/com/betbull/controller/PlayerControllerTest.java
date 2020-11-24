@@ -39,7 +39,7 @@ public class PlayerControllerTest {
             Assertions.fail("add-player - fail");
         }
 
-        val playerDto2 = getPlayer(playerDto1.getId());
+        val playerDto2 = getRequest("/players/" + playerDto1.getId(), PlayerDto.class);
         if (isNull(playerDto2)) {
             Assertions.fail("get-player - fail");
         }
@@ -62,24 +62,19 @@ public class PlayerControllerTest {
             Assertions.fail("add-player - fail");
         }
 
-        Double res = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.get("/players/" + playerDto1.getId() + "/transfer-fees")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(), Double.class);
+        val res = getRequest("/players/" + playerDto1.getId() + "/transfer-fees", Double.class);
         if (!res.equals((10 * 100000 / 10) * 1.1)) {
             Assertions.fail("add-player - fail");
         }
     }
 
-    private PlayerDto getPlayer(Long id) throws Exception {
-        return new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.get("/players/" + id)
+    private <T> T getRequest(String urlTemplate, Class<T> classOfT) throws Exception {
+        return new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.get(urlTemplate)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn()
                 .getResponse()
-                .getContentAsString(), PlayerDto.class);
+                .getContentAsString(), classOfT);
     }
 
     private PlayerDto newPlayer(PlayerDto playerDto) throws Exception {
