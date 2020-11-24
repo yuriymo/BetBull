@@ -1,16 +1,14 @@
-package com.betbull.services;
+package com.betbull.service;
 
-import com.betbull.dto.TeamDto;
+import com.betbull.models.TeamDto;
 import com.betbull.models.Team;
 import com.betbull.persistence.TeamRepository;
 import com.google.common.collect.Streams;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 

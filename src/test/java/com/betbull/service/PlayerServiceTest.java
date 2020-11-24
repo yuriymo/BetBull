@@ -1,13 +1,11 @@
-package com.betbull.services;
+package com.betbull.service;
 
 import com.betbull.Application;
-import com.betbull.dto.PlayerDto;
+import com.betbull.models.PlayerDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Set;
 
@@ -25,8 +23,8 @@ public class PlayerServiceTest {
     void addPlayer() {
         long team1 = teamService.save("team-1").getId();
         long team2 = teamService.save("team-2").getId();
-        long player1 = playerService.save("player-1", team1).getId();
-        long player2 = playerService.save("player-2", team2).getId();
+        long player1 = playerService.save(new PlayerDto(null, "player-1", 33, 13, team1, null)).getId();
+        long player2 = playerService.save(new PlayerDto(null, "player-2", 33, 13, team2, null)).getId();
         Set<Long> playerSet = Set.of(player1, player2);
         Set<Long> players = playerService.getAll().stream()
                 .map(PlayerDto::getId)
@@ -40,8 +38,8 @@ public class PlayerServiceTest {
     @Test
     void updatePlayer() {
         long team1 = teamService.save("team-1").getId();
-        long player1 = playerService.save("player-1", team1).getId();
-        playerService.updatePlayer(player1, "update test");
+        long player1 = playerService.save(new PlayerDto(null, "player-1", 33, 13, team1, null)).getId();
+        playerService.updatePlayer(player1, new PlayerDto( null, "update test", 33, 13, team1, null));
         if (!playerService.getPlayer(player1).getName().equals("update test")) {
             Assertions.fail("updatePlayer");
         }
@@ -50,7 +48,7 @@ public class PlayerServiceTest {
     @Test
     void deletePlayer() {
         long team1 = teamService.save("team-1").getId();
-        Long player1 = playerService.save("player-1", team1).getId();
+        Long player1 = playerService.save(new PlayerDto(null, "player-1", 33, 13, team1, null)).getId();
         playerService.deleteById(player1);
         Set<Long> players = playerService.getAll().stream()
                 .map(PlayerDto::getId)

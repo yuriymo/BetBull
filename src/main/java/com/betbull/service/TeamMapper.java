@@ -1,6 +1,6 @@
-package com.betbull.services;
+package com.betbull.service;
 
-import com.betbull.dto.TeamDto;
+import com.betbull.models.TeamDto;
 import com.betbull.models.Team;
 import org.mapstruct.Mapper;
 

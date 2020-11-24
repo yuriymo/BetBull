@@ -1,8 +1,8 @@
-package com.betbull.controllers;
+package com.betbull.controller;
 
 import com.betbull.Application;
-import com.betbull.dto.PlayerDto;
-import com.betbull.dto.TeamDto;
+import com.betbull.models.PlayerDto;
+import com.betbull.models.TeamDto;
 import com.google.gson.Gson;
 import lombok.val;
 import org.junit.Test;
@@ -27,28 +27,35 @@ public class PlayerControllerTest {
     @Test
     public void addPlayer() throws Exception {
 
-        val teamDto = new Gson().fromJson(retrieveResponseAsString("/add-player/test"), TeamDto.class);
+        val teamDto = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.post("/add-player/test")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString(), TeamDto.class);
         if (isNull(teamDto)) {
             Assertions.fail("add-team - fail");
         }
 
-        val playerDto = new Gson().fromJson(retrieveResponseAsString("/add-player?name=player-1&teamId=" + teamDto.getId()), PlayerDto.class);
+        val playerDto = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.post("/add-player?name=player-1&teamId=" + teamDto.getId())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString(), PlayerDto.class);
         if (isNull(playerDto)) {
             Assertions.fail("add-player - fail");
         }
 
-        val playerDto2 = new Gson().fromJson(retrieveResponseAsString("/player/" + playerDto.getId()), PlayerDto.class);
+        val playerDto2 = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.get("/player/" + playerDto.getId())
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString(), PlayerDto.class);
         if (isNull(playerDto2)) {
             Assertions.fail("get-player - fail");
         }
     }
 
-    private String retrieveResponseAsString(String s) throws Exception {
-        return mvc.perform(MockMvcRequestBuilders.get(s)
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString();
-    }
 }

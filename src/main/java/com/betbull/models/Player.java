@@ -10,6 +10,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @RequiredArgsConstructor
 @Getter
+@Setter
 @ToString(includeFieldNames = false)
 public class Player {
     @Id
@@ -18,6 +19,12 @@ public class Player {
     @NonNull
     @Column(name = "name")
     private String name;
+    @NonNull
+    @Column(name = "age")
+    private Integer age;
+    @NonNull
+    @Column(name = "experience")
+    private Integer experience;
     @ManyToOne
     @ToString.Exclude
     @NonNull
