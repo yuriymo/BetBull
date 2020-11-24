@@ -50,7 +50,7 @@ public class PlayerController {
         }
     }
 
-    @PostMapping("/players/save")
+    @PostMapping("/players/add")
     public ResponseEntity<PlayerDto> savePlayer(@RequestBody PlayerDto playerDto) {
         if (teamService.existsById(playerDto.getTeamId())) {
             return ResponseEntity.ok().body(playerService.save(playerDto));

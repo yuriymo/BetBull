@@ -27,7 +27,7 @@ public class PlayerControllerTest {
     @Test
     public void addPlayer() throws Exception {
 
-        val teamDto = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.post("/add-player/test")
+        val teamDto = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.post("/teams/add/test")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -37,7 +37,7 @@ public class PlayerControllerTest {
             Assertions.fail("add-team - fail");
         }
 
-        val playerDto = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.post("/add-player?name=player-1&teamId=" + teamDto.getId())
+        val playerDto = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.post("/players/save")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn()
