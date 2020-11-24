@@ -62,8 +62,8 @@ public class PlayerControllerTest {
             Assertions.fail("add-player - fail");
         }
 
-        val res = getRequest("/players/" + playerDto1.getId() + "/transfer-fees", Double.class);
-        if (!res.equals((10 * 100000 / 10) * 1.1)) {
+        val transferFees = getRequest("/players/" + playerDto1.getId() + "/transfer-fees", Double.class);
+        if (!transferFees.equals((10 * 100000 / 10) * 1.1)) {
             Assertions.fail("add-player - fail");
         }
     }
