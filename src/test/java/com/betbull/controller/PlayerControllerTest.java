@@ -37,7 +37,7 @@ public class PlayerControllerTest {
             Assertions.fail("add-team - fail");
         }
 
-        val playerDto = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.post("/players")
+        val playerDto1 = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.post("/players")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(new Gson().toJson(PlayerDto.builder().name("1").age(10).experience(10).teamId(teamDto.getId()).build()))
                 .accept(MediaType.APPLICATION_JSON))
@@ -45,11 +45,11 @@ public class PlayerControllerTest {
                 .andReturn()
                 .getResponse()
                 .getContentAsString(), PlayerDto.class);
-        if (isNull(playerDto)) {
+        if (isNull(playerDto1)) {
             Assertions.fail("add-player - fail");
         }
 
-        val playerDto2 = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.get("/players/" + playerDto.getId())
+        val playerDto2 = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.get("/players/" + playerDto1.getId())
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -57,6 +57,10 @@ public class PlayerControllerTest {
                 .getContentAsString(), PlayerDto.class);
         if (isNull(playerDto2)) {
             Assertions.fail("get-player - fail");
+        }
+
+        if (!playerDto1.equals(playerDto2)) {
+            Assertions.fail("addPlayer - fail");
         }
     }
 }
