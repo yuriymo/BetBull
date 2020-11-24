@@ -41,13 +41,14 @@ public class PlayerService {
 
     public PlayerDto save(PlayerDto playerDto) {
         Optional<Team> teamOptional = teamRepository.findById(playerDto.getTeamId());
-        if (teamOptional.isPresent()) {
-            Player player = playerMapper.fromDto(playerDto, teamOptional.get());
-            return playerMapper.toDto(playerRepository.save(player));
-        } else {
+        if (teamOptional.isEmpty()) {
             log.error("team id {} not exist", playerDto.getTeamId());
             return null;
         }
+        return Optional.of(playerMapper.fromDto(playerDto, teamOptional.get()))
+                .map(playerRepository::save)
+                .map(playerMapper::toDto)
+                .orElse(null);
     }
 
     public PlayerDto updatePlayer(long id, PlayerDto playerDto) {
