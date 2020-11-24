@@ -36,11 +36,22 @@ public class PlayerServiceTest {
     }
 
     @Test
-    void updatePlayer() {
+    void updatePlayerName() {
         long team1 = teamService.save("team-1").getId();
         long player1 = playerService.save(new PlayerDto(null, "player-1", 33, 13, team1, null)).getId();
         playerService.updatePlayer(player1, new PlayerDto( null, "update test", 33, 13, team1, null));
         if (!playerService.getPlayer(player1).getName().equals("update test")) {
+            Assertions.fail("updatePlayer");
+        }
+    }
+
+    @Test
+    void updatePlayerTeam() {
+        long team1 = teamService.save("team-1").getId();
+        long team2 = teamService.save("team-2").getId();
+        long player1 = playerService.save(new PlayerDto(null, "player-1", 33, 13, team1, null)).getId();
+        playerService.updatePlayer(player1, new PlayerDto( null, null, null, null, team2, null));
+        if (!playerService.getPlayer(player1).getTeamId().equals(team2)) {
             Assertions.fail("updatePlayer");
         }
     }
@@ -55,6 +66,17 @@ public class PlayerServiceTest {
                 .filter(player1::equals)
                 .collect(toSet());
         if (!players.isEmpty()) {
+            Assertions.fail("updatePlayer");
+        }
+    }
+
+    @Test
+    void getPlayerTransferFees() {
+        long team1 = teamService.save("team-1").getId();
+        long player1 = playerService.save(new PlayerDto(null, "player-1", 10, 10, team1, null)).getId();
+        double playerTransferFees = playerService.getPlayerTransferFees(player1);
+        double controlFee = (double) (10 * 100000 / 10) * 1.1;
+        if (playerTransferFees != controlFee) {
             Assertions.fail("updatePlayer");
         }
     }

@@ -21,10 +21,8 @@ public class PlayerController {
 
     @GetMapping("players/{id}/transfer-fees")
     public ResponseEntity<Double> getTransferFees(@PathVariable long id) {
-        PlayerDto playerDto = playerService.getPlayer(id);
-        if (nonNull(playerDto)) {
-            double transferFees = (playerDto.getExperience() * 100000 / playerDto.getAge()) * 1.1;
-            return ResponseEntity.ok().body(transferFees);
+        if (playerService.existsById(id)) {
+            return ResponseEntity.ok().body(playerService.getPlayerTransferFees(id));
         } else {
             return ResponseEntity.notFound().build();
         }

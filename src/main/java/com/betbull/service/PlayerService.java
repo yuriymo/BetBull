@@ -82,4 +82,9 @@ public class PlayerService {
     public boolean existsById(long id) {
         return playerRepository.existsById(id);
     }
+
+    public double getPlayerTransferFees(long id) {
+        PlayerDto playerDto = getPlayer(id);
+        return (double) (playerDto.getExperience() * 100000 / playerDto.getAge()) * 1.1;
+    }
 }
