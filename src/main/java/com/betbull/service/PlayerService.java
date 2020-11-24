@@ -58,8 +58,9 @@ public class PlayerService {
             Optional.ofNullable(playerDto.getAge()).ifPresent(player::setAge);
             Optional.ofNullable(playerDto.getExperience()).ifPresent(player::setExperience);
             if (nonNull(playerDto.getTeamId()) && !playerDto.getTeamId().equals(player.getTeam().getId())) {
-                Optional<Team> team = teamRepository.findById(playerDto.getTeamId());
-                if (team.isPresent()) {
+                Optional<Team> teamOptional = teamRepository.findById(playerDto.getTeamId());
+                if (teamOptional.isPresent()) {
+                    player.setTeam(teamOptional.get());
                     return playerMapper.toDto(playerRepository.save(player));
                 } else {
                     log.error("team id {} not exist", playerDto.getTeamId());
