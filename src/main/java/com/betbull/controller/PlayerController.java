@@ -1,6 +1,6 @@
 package com.betbull.controller;
 
-import com.betbull.models.PlayerDto;
+import com.betbull.model.PlayerDto;
 import com.betbull.service.PlayerService;
 import com.betbull.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +48,7 @@ public class PlayerController {
         }
     }
 
-    @PostMapping("/players/add")
+    @PostMapping("/players")
     public ResponseEntity<PlayerDto> savePlayer(@RequestBody PlayerDto playerDto) {
         if (teamService.existsById(playerDto.getTeamId())) {
             return ResponseEntity.ok().body(playerService.save(playerDto));
@@ -57,7 +57,7 @@ public class PlayerController {
         }
     }
 
-    @PutMapping("/players/update/{id}")
+    @PutMapping("/players/{id}")
     public ResponseEntity<PlayerDto> updatePlayer(@PathVariable long id, @RequestBody PlayerDto playerDto) {
         if (playerService.existsById(id)) {
             return ResponseEntity.ok().body(playerService.updatePlayer(id, playerDto));
@@ -66,7 +66,7 @@ public class PlayerController {
         }
     }
 
-    @DeleteMapping("/players/del/{id}")
+    @DeleteMapping("/players/{id}")
     public ResponseEntity<PlayerDto> deletePlayer(@PathVariable long id) {
         PlayerDto PlayerDto = playerService.getPlayer(id);
         if (nonNull(PlayerDto)) {

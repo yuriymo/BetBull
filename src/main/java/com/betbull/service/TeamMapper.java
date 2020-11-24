@@ -1,7 +1,7 @@
 package com.betbull.service;
 
-import com.betbull.models.TeamDto;
-import com.betbull.models.Team;
+import com.betbull.model.TeamDto;
+import com.betbull.model.Team;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

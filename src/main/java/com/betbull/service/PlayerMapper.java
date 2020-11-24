@@ -1,8 +1,8 @@
 package com.betbull.service;
 
-import com.betbull.models.Player;
-import com.betbull.models.PlayerDto;
-import com.betbull.models.Team;
+import com.betbull.model.Player;
+import com.betbull.model.PlayerDto;
+import com.betbull.model.Team;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 

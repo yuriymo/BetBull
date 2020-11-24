@@ -1,7 +1,7 @@
 package com.betbull.service;
 
 import com.betbull.Application;
-import com.betbull.models.PlayerDto;
+import com.betbull.model.PlayerDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

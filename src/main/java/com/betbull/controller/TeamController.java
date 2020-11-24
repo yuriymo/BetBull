@@ -1,6 +1,6 @@
 package com.betbull.controller;
 
-import com.betbull.models.TeamDto;
+import com.betbull.model.TeamDto;
 import com.betbull.service.TeamService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -36,12 +36,12 @@ public class TeamController {
         }
     }
 
-    @PostMapping("/teams/add/{name}")
+    @PostMapping("/teams/{name}")
     public ResponseEntity<TeamDto> addTeam(@PathVariable String name) {
         return ResponseEntity.ok().body(teamService.save(name));
     }
 
-    @PutMapping("/teams/update/{id}/{name}")
+    @PutMapping("/teams/{id}/{name}")
     public ResponseEntity<TeamDto> updateTeam(@PathVariable long id, @PathVariable String name) {
         if (teamService.existsById(id)) {
             return ResponseEntity.ok().body(teamService.updateTeam(id, name));
@@ -50,7 +50,7 @@ public class TeamController {
         }
     }
 
-    @DeleteMapping("/teams/del/{id}")
+    @DeleteMapping("/teams/{id}")
     public ResponseEntity<TeamDto> deleteTeam(@PathVariable long id) {
         TeamDto teamDto = teamService.getTeam(id);
         if (nonNull(teamDto)) {

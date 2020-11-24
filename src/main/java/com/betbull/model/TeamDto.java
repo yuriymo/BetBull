@@ -1,4 +1,4 @@
-package com.betbull.models;
+package com.betbull.model;
 
 import lombok.*;
 

@@ -1,7 +1,7 @@
 package com.betbull.service;
 
-import com.betbull.models.TeamDto;
-import com.betbull.models.Team;
+import com.betbull.model.TeamDto;
+import com.betbull.model.Team;
 import com.betbull.persistence.TeamRepository;
 import com.google.common.collect.Streams;
 import lombok.extern.slf4j.Slf4j;

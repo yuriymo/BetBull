@@ -1,8 +1,8 @@
 package com.betbull.controller;
 
 import com.betbull.Application;
-import com.betbull.models.PlayerDto;
-import com.betbull.models.TeamDto;
+import com.betbull.model.PlayerDto;
+import com.betbull.model.TeamDto;
 import com.google.gson.Gson;
 import lombok.val;
 import org.junit.Test;
@@ -27,7 +27,7 @@ public class PlayerControllerTest {
     @Test
     public void addPlayer() throws Exception {
 
-        val teamDto = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.post("/teams/add/test")
+        val teamDto = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.post("/teams/test")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -37,7 +37,7 @@ public class PlayerControllerTest {
             Assertions.fail("add-team - fail");
         }
 
-        val playerDto = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.post("/players/add")
+        val playerDto = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.post("/players")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn()

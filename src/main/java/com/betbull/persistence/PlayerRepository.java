@@ -1,6 +1,6 @@
 package com.betbull.persistence;
 
-import com.betbull.models.Player;
+import com.betbull.model.Player;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
