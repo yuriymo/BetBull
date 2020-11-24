@@ -38,6 +38,8 @@ public class PlayerControllerTest {
         }
 
         val playerDto = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.post("/players")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(PlayerDto.builder().name("1").age(10).experience(10).teamId(teamDto.getId()).build()))
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn()
@@ -57,5 +59,4 @@ public class PlayerControllerTest {
             Assertions.fail("get-player - fail");
         }
     }
-
 }
