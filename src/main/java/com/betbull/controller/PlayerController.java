@@ -60,7 +60,12 @@ public class PlayerController {
     @PutMapping("/players/{id}")
     public ResponseEntity<PlayerDto> updatePlayer(@PathVariable long id, @RequestBody PlayerDto playerDto) {
         if (playerService.existsById(id)) {
-            return ResponseEntity.ok().body(playerService.updatePlayer(id, playerDto));
+            PlayerDto body = playerService.updatePlayer(id, playerDto);
+            if (nonNull(body)) {
+                return ResponseEntity.ok().body(body);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
         } else {
             return ResponseEntity.notFound().build();
         }
