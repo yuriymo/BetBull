@@ -28,35 +28,18 @@ public class PlayerControllerTest {
 
     @Test
     public void addPlayer() throws Exception {
-
-        val teamDto = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.post("/teams/test")
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(), TeamDto.class);
+        val teamDto = newTeam("test");
         if (isNull(teamDto)) {
             Assertions.fail("add-team - fail");
         }
 
-        val playerDto1 = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.post("/players")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(new Gson().toJson(PlayerDto.builder().name("1").age(10).experience(10).teamId(teamDto.getId()).build()))
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(), PlayerDto.class);
+        PlayerDto playerDto = PlayerDto.builder().name("1").age(10).experience(10).teamId(teamDto.getId()).build();
+        val playerDto1 = newPlayer(playerDto);
         if (isNull(playerDto1)) {
             Assertions.fail("add-player - fail");
         }
 
-        val playerDto2 = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.get("/players/" + playerDto1.getId())
-                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn()
-                .getResponse()
-                .getContentAsString(), PlayerDto.class);
+        val playerDto2 = getPlayer(playerDto1.getId());
         if (isNull(playerDto2)) {
             Assertions.fail("get-player - fail");
         }
@@ -64,5 +47,58 @@ public class PlayerControllerTest {
         if (!playerDto1.equals(playerDto2)) {
             Assertions.fail("addPlayer - fail");
         }
+    }
+
+    @Test
+    public void getPlayerTransferFees() throws Exception {
+        val teamDto = newTeam("test");
+        if (isNull(teamDto)) {
+            Assertions.fail("add-team - fail");
+        }
+
+        PlayerDto playerDto = PlayerDto.builder().name("1").age(10).experience(10).teamId(teamDto.getId()).build();
+        val playerDto1 = newPlayer(playerDto);
+        if (isNull(playerDto1)) {
+            Assertions.fail("add-player - fail");
+        }
+
+        Double res = new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.get("/players/" + playerDto1.getId() + "/transfer-fees")
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString(), Double.class);
+        if (!res.equals((10 * 100000 / 10) * 1.1)) {
+            Assertions.fail("add-player - fail");
+        }
+    }
+
+    private PlayerDto getPlayer(Long id) throws Exception {
+        return new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.get("/players/" + id)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString(), PlayerDto.class);
+    }
+
+    private PlayerDto newPlayer(PlayerDto playerDto) throws Exception {
+        return new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.post("/players")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(new Gson().toJson(playerDto))
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString(), PlayerDto.class);
+    }
+
+    private TeamDto newTeam(final String name) throws Exception {
+        return new Gson().fromJson(mvc.perform(MockMvcRequestBuilders.post("/teams/" + name)
+                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn()
+                .getResponse()
+                .getContentAsString(), TeamDto.class);
     }
 }
