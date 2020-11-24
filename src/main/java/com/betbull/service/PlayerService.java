@@ -52,27 +52,23 @@ public class PlayerService {
 
     public PlayerDto updatePlayer(long id, PlayerDto playerDto) {
         Optional<Player> playerOptional = playerRepository.findById(id);
-        if (playerOptional.isPresent()) {
-            Player player = playerOptional.get();
-            Optional.ofNullable(playerDto.getName()).ifPresent(player::setName);
-            Optional.ofNullable(playerDto.getAge()).ifPresent(player::setAge);
-            Optional.ofNullable(playerDto.getExperience()).ifPresent(player::setExperience);
-            if (nonNull(playerDto.getTeamId()) && !playerDto.getTeamId().equals(player.getTeam().getId())) {
-                Optional<Team> teamOptional = teamRepository.findById(playerDto.getTeamId());
-                if (teamOptional.isPresent()) {
-                    player.setTeam(teamOptional.get());
-                    return playerMapper.toDto(playerRepository.save(player));
-                } else {
-                    log.error("team id {} not exist", playerDto.getTeamId());
-                    return null;
-                }
-            } else {
-                return playerMapper.toDto(playerRepository.save(player));
-            }
-        } else {
+        if (playerOptional.isEmpty()) {
             log.error("player id {} not exist", id);
             return null;
         }
+        Player player = playerOptional.get();
+        Optional.ofNullable(playerDto.getName()).ifPresent(player::setName);
+        Optional.ofNullable(playerDto.getAge()).ifPresent(player::setAge);
+        Optional.ofNullable(playerDto.getExperience()).ifPresent(player::setExperience);
+        if (nonNull(playerDto.getTeamId()) && !playerDto.getTeamId().equals(player.getTeam().getId())) {
+            Optional<Team> teamOptional = teamRepository.findById(playerDto.getTeamId());
+            if (teamOptional.isEmpty()) {
+                log.error("team id {} not exist", playerDto.getTeamId());
+                return null;
+            }
+            player.setTeam(teamOptional.get());
+        }
+        return playerMapper.toDto(playerRepository.save(player));
     }
 
     public void deleteById(long id) {
