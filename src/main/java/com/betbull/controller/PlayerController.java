@@ -22,31 +22,28 @@ public class PlayerController {
 
     @GetMapping("players/{id}/transfer-fees")
     public ResponseEntity<Double> getTransferFees(@PathVariable long id) {
-        if (playerService.existsById(id)) {
-            return ResponseEntity.ok().body(playerService.getPlayerTransferFees(id));
-        } else {
+        if (!playerService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok().body(playerService.getPlayerTransferFees(id));
     }
 
     @GetMapping("/players")
     public ResponseEntity<List<PlayerDto>> getPlayers() {
         List<PlayerDto> playerDtoList = playerService.getAll();
-        if (!playerDtoList.isEmpty()) {
-            return ResponseEntity.ok().body(playerDtoList);
-        } else {
+        if (playerDtoList.isEmpty()) {
             return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok().body(playerDtoList);
     }
 
     @GetMapping("/players/{id}")
     public ResponseEntity<PlayerDto> getPlayer(@PathVariable long id) {
         PlayerDto playerDto = playerService.getPlayer(id);
-        if (nonNull(playerDto)) {
-            return ResponseEntity.ok().body(playerDto);
-        } else {
+        if (isNull(playerDto)) {
             return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok().body(playerDto);
     }
 
     @PostMapping("/players")
