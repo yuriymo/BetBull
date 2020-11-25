@@ -60,10 +60,10 @@ public class PlayerController {
             return ResponseEntity.notFound().build();
         }
         PlayerDto body = playerService.updatePlayer(id, playerDto);
-        if (nonNull(body)) {
-            return ResponseEntity.ok().body(body);
+        if (isNull(body)) {
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().body(body);
     }
 
     @DeleteMapping("/players/{id}")
