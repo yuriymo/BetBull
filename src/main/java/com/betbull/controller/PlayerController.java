@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 
 @RestController
@@ -50,35 +51,31 @@ public class PlayerController {
 
     @PostMapping("/players")
     public ResponseEntity<PlayerDto> savePlayer(@RequestBody PlayerDto playerDto) {
-        if (teamService.existsById(playerDto.getTeamId())) {
-            return ResponseEntity.ok().body(playerService.save(playerDto));
-        } else {
+        if (!teamService.existsById(playerDto.getTeamId())) {
             return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok().body(playerService.save(playerDto));
     }
 
     @PutMapping("/players/{id}")
     public ResponseEntity<PlayerDto> updatePlayer(@PathVariable long id, @RequestBody PlayerDto playerDto) {
-        if (playerService.existsById(id)) {
-            PlayerDto body = playerService.updatePlayer(id, playerDto);
-            if (nonNull(body)) {
-                return ResponseEntity.ok().body(body);
-            } else {
-                return ResponseEntity.notFound().build();
-            }
-        } else {
+        if (!playerService.existsById(id)) {
             return ResponseEntity.notFound().build();
         }
+        PlayerDto body = playerService.updatePlayer(id, playerDto);
+        if (nonNull(body)) {
+            return ResponseEntity.ok().body(body);
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/players/{id}")
     public ResponseEntity<PlayerDto> deletePlayer(@PathVariable long id) {
         PlayerDto PlayerDto = playerService.getPlayer(id);
-        if (nonNull(PlayerDto)) {
-            playerService.deleteById(id);
-            return ResponseEntity.ok().body(PlayerDto);
-        } else {
+        if (isNull(PlayerDto)) {
             return ResponseEntity.notFound().build();
         }
+        playerService.deleteById(id);
+        return ResponseEntity.ok().body(PlayerDto);
     }
 }
