@@ -6,7 +6,7 @@ First of all, to generate this data, we need a Rest API that includes the CRUD o
 team and players.
 A reminder before we get started:
 The application should be lifted with the model and data that you will determine.
-Scenario 1
+- Scenario 1
 REST API with insert update and delete requests to generate team and player data.
 Scenario 2
 The client will list all players and then receive the selected player's teams in the second request.
