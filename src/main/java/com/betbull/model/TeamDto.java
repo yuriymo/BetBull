@@ -2,9 +2,8 @@ package com.betbull.model;
 
 import lombok.*;
 
+@Data(staticConstructor = "of")
 @NoArgsConstructor
-@Getter
-@Setter
 @ToString(includeFieldNames = false)
 public class TeamDto {
     private Long id;

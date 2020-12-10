@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
 @RestController
+@RequestMapping("/api/players")
 public class PlayerController {
 
     @Autowired
@@ -20,7 +20,7 @@ public class PlayerController {
     @Autowired
     private TeamService teamService;
 
-    @GetMapping("players/{id}/transfer-fees")
+    @GetMapping("/{id}/transfer-fees")
     public ResponseEntity<Double> getTransferFees(@PathVariable long id) {
         if (!playerService.existsById(id)) {
             return ResponseEntity.notFound().build();
@@ -37,7 +37,7 @@ public class PlayerController {
         return ResponseEntity.ok().body(playerDtoList);
     }
 
-    @GetMapping("/players/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<PlayerDto> getPlayer(@PathVariable long id) {
         PlayerDto playerDto = playerService.getPlayer(id);
         if (isNull(playerDto)) {
@@ -54,7 +54,12 @@ public class PlayerController {
         return ResponseEntity.ok().body(playerService.save(playerDto));
     }
 
-    @PutMapping("/players/{id}")
+    @PostMapping("/bulk")
+    public ResponseEntity<List<PlayerDto>> savePlayers(@RequestBody List<PlayerDto> playerDtoList) {
+        return ResponseEntity.ok().body(playerService.save(playerDtoList));
+    }
+
+    @PutMapping("/{id}")
     public ResponseEntity<PlayerDto> updatePlayer(@PathVariable long id, @RequestBody PlayerDto playerDto) {
         if (!playerService.existsById(id)) {
             return ResponseEntity.notFound().build();
@@ -66,7 +71,7 @@ public class PlayerController {
         return ResponseEntity.ok().body(body);
     }
 
-    @DeleteMapping("/players/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<PlayerDto> deletePlayer(@PathVariable long id) {
         PlayerDto PlayerDto = playerService.getPlayer(id);
         if (isNull(PlayerDto)) {

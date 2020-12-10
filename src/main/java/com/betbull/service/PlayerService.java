@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static java.util.Objects.nonNull;
@@ -49,6 +50,22 @@ public class PlayerService {
                 .map(playerRepository::save)
                 .map(playerMapper::toDto)
                 .orElse(null);
+    }
+
+    public List<PlayerDto> save(List<PlayerDto> playerDtoList) {
+        return playerDtoList.stream()
+                .map(playerDto -> {
+                    Optional<Team> teamOptional = teamRepository.findById(playerDto.getTeamId());
+                    if (teamOptional.isEmpty()) {
+                        log.error("team id {} not exist", playerDto.getTeamId());
+                        return null;
+                    }
+                    return playerMapper.fromDtoIgnoreId(playerDto, teamOptional.get());
+                })
+                .filter(Objects::nonNull)
+                .map(playerRepository::save)
+                .map(playerMapper::toDto)
+                .collect(toList());
     }
 
     public PlayerDto updatePlayer(long id, PlayerDto playerDto) {

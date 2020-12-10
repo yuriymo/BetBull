@@ -22,4 +22,11 @@ public interface PlayerMapper {
     @Mapping(source = "playerDto.age", target = "age")
     @Mapping(source = "playerDto.experience", target = "experience")
     Player fromDto(PlayerDto playerDto, Team team);
+
+    @Mapping(source = "team", target = "team")
+    @Mapping(target = "id", ignore = true)
+    @Mapping(source = "playerDto.name", target = "name")
+    @Mapping(source = "playerDto.age", target = "age")
+    @Mapping(source = "playerDto.experience", target = "experience")
+    Player fromDtoIgnoreId(PlayerDto playerDto, Team team);
 }

@@ -1,7 +1,7 @@
 package com.betbull.service;
 
-import com.betbull.model.TeamDto;
 import com.betbull.model.Team;
+import com.betbull.model.TeamDto;
 import com.betbull.persistence.TeamRepository;
 import com.google.common.collect.Streams;
 import lombok.extern.slf4j.Slf4j;
@@ -34,11 +34,19 @@ public class TeamService {
     }
 
     public TeamDto save(String name) {
-        return teamMapper.toDto(teamRepository.save(new Team(name)));
+        return teamMapper.toDto(teamRepository.save(Team.builder().name(name).build()));
+    }
+
+    public List<TeamDto> save(List<TeamDto> teamDtoList) {
+        return teamDtoList.stream()
+                .map(teamMapper::fromDtoIgnoreId)
+                .map(teamRepository::save)
+                .map(teamMapper::toDto)
+                .collect(toList());
     }
 
     public TeamDto updateTeam(long id, String name) {
-        return teamMapper.toDto(teamRepository.save(new Team(id, name)));
+        return teamMapper.toDto(teamRepository.save(Team.builder().id(id).name(name).build()));
     }
 
     public void deleteById(long id) {
