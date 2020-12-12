@@ -28,7 +28,7 @@ public class PlayerController {
         return ResponseEntity.ok().body(playerService.getPlayerTransferFees(id));
     }
 
-    @GetMapping("/players")
+    @GetMapping("/")
     public ResponseEntity<List<PlayerDto>> getPlayers() {
         List<PlayerDto> playerDtoList = playerService.getAll();
         if (playerDtoList.isEmpty()) {
@@ -46,7 +46,7 @@ public class PlayerController {
         return ResponseEntity.ok().body(playerDto);
     }
 
-    @PostMapping("/players")
+    @PostMapping("/")
     public ResponseEntity<PlayerDto> savePlayer(@RequestBody PlayerDto playerDto) {
         if (!teamService.existsById(playerDto.getTeamId())) {
             return ResponseEntity.notFound().build();
