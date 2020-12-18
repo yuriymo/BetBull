@@ -3,6 +3,8 @@ package com.betbull.controller;
 import com.betbull.model.PlayerDto;
 import com.betbull.service.PlayerService;
 import com.betbull.service.TeamService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,7 +24,7 @@ public class PlayerController {
 
     @GetMapping("/{id}/transfer-fees")
     public ResponseEntity<Double> getTransferFees(@PathVariable long id) {
-        if (!playerService.existsById(id)) {
+        if (playerService.isNotExistById(id)) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok().body(playerService.getPlayerTransferFees(id));
@@ -38,7 +40,10 @@ public class PlayerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PlayerDto> getPlayer(@PathVariable long id) {
+    @ApiOperation(value = "find player by id",
+            notes = "get corresponded player by id",
+            response = PlayerDto.class)
+    public ResponseEntity<PlayerDto> getPlayer(@ApiParam(value = "player identifier", required = true) @PathVariable long id) {
         PlayerDto playerDto = playerService.getPlayer(id);
         if (isNull(playerDto)) {
             return ResponseEntity.notFound().build();
@@ -61,7 +66,7 @@ public class PlayerController {
 
     @PutMapping("/{id}")
     public ResponseEntity<PlayerDto> updatePlayer(@PathVariable long id, @RequestBody PlayerDto playerDto) {
-        if (!playerService.existsById(id)) {
+        if (playerService.isNotExistById(id)) {
             return ResponseEntity.notFound().build();
         }
         PlayerDto body = playerService.updatePlayer(id, playerDto);

@@ -93,8 +93,8 @@ public class PlayerService {
         playerRepository.deleteById(id);
     }
 
-    public boolean existsById(long id) {
-        return playerRepository.existsById(id);
+    public boolean isNotExistById(long id) {
+        return !playerRepository.existsById(id);
     }
 
     public double getPlayerTransferFees(long id) {

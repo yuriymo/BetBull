@@ -33,7 +33,7 @@ public class PlayerControllerTest {
             Assertions.fail("add-team - fail");
         }
 
-        val playerDto = PlayerDto.builder().name("1").age(10).experience(10).teamId(teamDto.getId()).build();
+        val playerDto = PlayerDto.builder().name("a").age(10).experience(10).teamId(teamDto.getId()).build();
         val playerDto1 = newPlayer(playerDto);
         if (isNull(playerDto1)) {
             Assertions.fail("add-player - fail");
